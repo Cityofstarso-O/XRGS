@@ -741,7 +741,9 @@ bool GaussianSplatting::initShaders(void)
   prepends += nvh::stringFormat("#define SHOW_SH_ONLY %d\n", m_defines.showShOnly);
   prepends += nvh::stringFormat("#define MAX_SH_DEGREE %d\n", m_defines.maxShDegree);
   prepends += nvh::stringFormat("#define DATA_STORAGE %d\n", m_defines.dataStorage);
-  prepends += nvh::stringFormat("#define SH_FORMAT %d\n", m_defines.shFormat);
+  // we use sh buffer to store other data in spacetime gaussian mode, so it must be float32.
+  prepends += nvh::stringFormat("#define SH_FORMAT %d\n",
+                                m_gsMode == GSMode::GSMode_SPACETIME_LITE ? FORMAT_FLOAT32 : m_defines.shFormat);
   prepends += nvh::stringFormat("#define POINT_CLOUD_MODE %d\n", m_defines.pointCloudModeEnabled);
   prepends += nvh::stringFormat("#define USE_BARYCENTRIC %d\n", m_defines.fragmentBarycentric);
   prepends += nvh::stringFormat("#define GAMMA_CORRECTION %d\n", gammaCorrection);
